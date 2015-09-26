@@ -1,0 +1,28 @@
+
+Minified
+The little world
+
+
+
+1. eine einfache map machen 
+Viewport: 640x480
+Map: 2400x3200
+Figur: 32x32
+
+2. eine Karte 64x48
+
+Ant-Tom
+- Front
+- Links (1,2,3)
+- Rechts (1,2,3)
+- Up (1,2,3)
+- Down (1,2,3)
+
+- Höhlen eintritt
+- Niedriges Gras
+- Hohes Gras
+- Himbeere
+- Batterie
+
+- Energiebar
+- Speedbar
