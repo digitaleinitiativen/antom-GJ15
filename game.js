@@ -65,6 +65,7 @@ Antom.State.Game.prototype = {
     initText: function() {
         //-----Score Text----
         var style = {
+            font: "18px Arial",
             fill: "#fff"
         };
 
@@ -76,7 +77,7 @@ Antom.State.Game.prototype = {
     },
     initHealthBar: function() {
         this.bar = this.add.bitmapData(100,8);
-        this.barSprite = this.add.sprite(200,22.5, this.bar);
+        this.barSprite = this.add.sprite(140,18, this.bar);
         this.barSprite.fixedToCamera = true;
     },
     initAmeisenbau: function() {
@@ -84,6 +85,10 @@ Antom.State.Game.prototype = {
         this.ameisenbau = this.add.sprite(this.world.centerX, this.world.centerY,'ameisenbau');
         this.ameisenbau.anchor.setTo(0.5, 0.5);
         this.physics.arcade.enable(this.ameisenbau);
+    },
+    initArrow: function() {
+        this.arrow = this.add.sprite(this.world.centerX, this.world.centerY, '001_Sprite_Arrow');
+        this.arrow.anchor.setTo(0.5, 0.5);
     },
     setTilemap: function() {
         // set tilemap
@@ -98,11 +103,17 @@ Antom.State.Game.prototype = {
         this.layer = this.map.createLayer('Kachelebene 1');
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
         this.map.setTileIndexCallback(15, this.pickupVitamin, this);
-
-
+        this.map.setTileIndexCallback(17, this.pickupPowerup, this);
     },
-
-
+    spawnEnemies: function() {
+        this.initEnemyBlue(450,450);
+        this.initEnemyPurple(400,400);
+        this.initEnemyBlue(1800,1200);
+        this.initEnemyPurple(2500,1900);
+        this.initEnemyBlue(800,600);
+        this.initEnemyPurple(1200,1200);
+        this.initEnemyPurple(600,2000);
+    },
     create: function() {
 
         this.setTilemap();
@@ -111,12 +122,9 @@ Antom.State.Game.prototype = {
         this.initHealthBar();
         this.initAmeisenbau();
         this.initPlayer();
+        this.initArrow();
         this.initEnemyGroups();
-        this.initEnemyBlue(500,500);
-        this.initEnemyPurple(400,400);
-
-        this.arrow = this.add.sprite(this.world.centerX, this.world.centerY, 'arrow');
-        this.arrow.anchor.setTo(0.5, 0.5);
+        this.spawnEnemies();
 
         ///Timer for Vitamins
         this.time.events.loop(Phaser.Timer.SECOND * 0.5, this.decreaseVitamins, this);
@@ -130,12 +138,15 @@ Antom.State.Game.prototype = {
         this.playerMovement();
         this.showArrow();
         this.updateHealthBar();
+        this.updateArrow();
         this.collisionDetectionPurpleEnemy();
         this.collisionDetectionBlueEnemy();
         this.collisionDetectionVitamins();
         this.collisionDetectionPowerups();
         this.collisionDetectionAmeisenbau();
 
+    },
+    updateArrow: function() {
         this.arrow.rotation = this.physics.arcade.angleBetween(this.arrow, this.ameisenbau);
     },
     updateHealthBar: function() {
@@ -220,8 +231,6 @@ Antom.State.Game.prototype = {
     collisionDetectionPurpleEnemy: function() {
         //----Enemy collide----------
         this.physics.arcade.collide(this.dude,this.purpleEnemies,function(dude,enemy) {
-            dude.kill();
-            enemy.kill();
             this.vitamins = 0;
             this.refreshTexts();
         }, null, this);
@@ -230,8 +239,6 @@ Antom.State.Game.prototype = {
     collisionDetectionBlueEnemy: function() {
         //----Enemy collide----------
         this.physics.arcade.collide(this.dude,this.blueEnemies,function(dude,enemy) {
-            dude.kill();
-            enemy.kill();
             this.vitamins = 0;
             this.refreshTexts();
         }, null, this);
@@ -251,7 +258,7 @@ Antom.State.Game.prototype = {
         //----Carrot collide----------
         this.physics.arcade.overlap(this.dude,this.carrots,function(dude,carrot) {
             carrot.kill();
-            this.playerSpeed = this.playerSpeed + 50;
+            this.playerSpeed = this.playerSpeed + 25;
             this.refreshTexts();
         }, null, this);
     },
@@ -288,6 +295,11 @@ Antom.State.Game.prototype = {
             this.map.putTile(3, tile.x, tile.y);
             this.carryingVitamin = true;
         }
+    },
+    pickupPowerup: function(sprite, tile) {
+        this.map.putTile(3, tile.x, tile.y);
+        this.playerSpeed = this.playerSpeed + 50;
+        this.refreshTexts();
     }
 
 };
