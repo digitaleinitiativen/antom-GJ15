@@ -119,6 +119,7 @@ Antom.prototype = {
         this.map.setTileIndexCallback(15, this.pickupVitamin, this);
 
 
+
         this.initText();
         this.initAmeisenbau();
         this.initPlayer();
