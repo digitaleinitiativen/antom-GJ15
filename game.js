@@ -68,10 +68,10 @@ Antom.State.Game.prototype = {
             fill: "#fff"
         };
 
-        this.vitaminText = this.add.text(10,10, "Vitaminelevel:", style);
+        this.vitaminText = this.add.text(10,10, "Vitaminlevel:", style);
         this.vitaminText.fixedToCamera = true;
 
-        this.speedText = this.add.text(10, 50, "PlayerSpeed: " + this.playerSpeed, style);
+        this.speedText = this.add.text(10, 40, "PlayerSpeed: " + this.playerSpeed, style);
         this.speedText.fixedToCamera = true;
     },
     initHealthBar: function() {
