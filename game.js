@@ -6,7 +6,6 @@ var Antom = function(game) {
     this.dude = null;
     this.purpleEnemies = null;
     this.blueEnemies = null;
-    this.item = null;
     this.enemySpeed = 50;
     this.controls = null;
     this.stars = null;
@@ -17,7 +16,8 @@ var Antom = function(game) {
     this.speedText = null;
     this.ameisenbau = null;
     this.carryingVitamin = false;
-    this.vitaminBar = null;
+    this.bar = null;
+    this.barSprite = null;
 };
 
 Antom.prototype = {
@@ -88,13 +88,17 @@ Antom.prototype = {
             fill: "#fff"
         };
 
-        this.vitaminText = this.add.text(10,10, "Vitamine: " + this.vitamins, style);
+        this.vitaminText = this.add.text(10,10, "Vitaminelevel:", style);
         this.vitaminText.fixedToCamera = true;
 
         this.speedText = this.add.text(10, 50, "PlayerSpeed: " + this.playerSpeed, style);
         this.speedText.fixedToCamera = true;
     },
-
+    initHealthBar: function() {
+        this.bar = this.add.bitmapData(100,8);
+        this.barSprite = this.add.sprite(200,22.5, this.bar);
+        this.barSprite.fixedToCamera = true;
+    },
     initAmeisenbau: function() {
         //----Ameisenbau----
         this.ameisenbau = this.add.sprite(this.world.centerX, this.world.centerY,'ameisenbau');
@@ -118,9 +122,8 @@ Antom.prototype = {
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
         this.map.setTileIndexCallback(15, this.pickupVitamin, this);
 
-
-
         this.initText();
+        this.initHealthBar();
         this.initAmeisenbau();
         this.initPlayer();
         this.initEnemyGroups();
@@ -131,15 +134,17 @@ Antom.prototype = {
         this.arrow.anchor.setTo(0.5, 0.5);
 
         ///Timer for Vitamins
-        this.time.events.loop(Phaser.Timer.SECOND, this.decreaseVitamins, this);
+        this.time.events.loop(Phaser.Timer.SECOND * 0.5, this.decreaseVitamins, this);
         this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updatePurpleEnemies, this);
         this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updateBlueEnemies, this);
     },
 
     update: function() {
         this.game.physics.arcade.collide(this.dude, this.layer);
+
         this.playerMovement();
         this.showArrow();
+        this.updateHealthBar();
         this.collisionDetectionPurpleEnemy();
         this.collisionDetectionBlueEnemy();
         this.collisionDetectionVitamins();
@@ -147,6 +152,22 @@ Antom.prototype = {
         this.collisionDetectionAmeisenbau();
 
         this.arrow.rotation = this.physics.arcade.angleBetween(this.arrow, this.ameisenbau);
+    },
+    updateHealthBar: function() {
+        this.bar.context.clearRect(0, 0, this.bar.width, this.bar.height);
+        if (this.vitamins < 32) {
+            this.bar.context.fillStyle = '#f00';
+        }
+        else if (this.vitamins < 64) {
+            this.bar.context.fillStyle = '#ff0';
+        }
+        else {
+            this.bar.context.fillStyle = '#0f0';
+        }
+        this.bar.context.fillRect(0, 0, this.vitamins, 8);
+        this.bar.dirty = true;
+        this.barSprite.position.x = this.dude.position.x - this.barSprite.width / 4;
+        this.barSprite.position.y = this.dude.position.y - 50;
     },
     showArrow: function() {
         if(this.carryingVitamin) {
@@ -256,13 +277,16 @@ Antom.prototype = {
     },
 
     refreshTexts: function() {
-        this.vitaminText.text = "Vitamins: " + this.vitamins;
+        //this.vitaminText.text = "Vitamins: " + this.vitamins;
         this.speedText.text = "PlayerSpeed: " + this.playerSpeed;
     },
 
     decreaseVitamins: function() {
         //---Decrease Vitamins---------
         this.vitamins--;
+        if(this.vitamins <= 0) {
+            this.dude.kill();
+        }
         this.refreshTexts();
     },
 
