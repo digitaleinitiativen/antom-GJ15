@@ -2,6 +2,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
 
 var Antom = function(game) {
     this.game = game;
+    this.arrow = null;
     this.dude = null;
     this.purpleEnemies = null;
     this.blueEnemies = null;
@@ -30,6 +31,7 @@ Antom.prototype = {
 
     loadAssets: function() {
         this.load.image('star', 'assets/star.png');
+        this.load.image('arrow', 'assets/arrow.png');
         this.load.tilemap('map', 'assets/001_AnTom_Level1.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
         this.load.spritesheet('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png', 32, 32, 2);
@@ -94,7 +96,8 @@ Antom.prototype = {
 
     initAmeisenbau: function() {
         //----Ameisenbau----
-        this.ameisenbau = this.add.sprite(game.world.centerX, game.world.centerY,'ameisenbau');
+        this.ameisenbau = this.add.sprite(this.world.centerX, this.world.centerY,'ameisenbau');
+        this.ameisenbau.anchor.setTo(0.5, 0.5);
         this.physics.arcade.enable(this.ameisenbau);
     },
 
@@ -122,6 +125,9 @@ Antom.prototype = {
         this.initEnemyBlue(500,500);
         this.initEnemyPurple(400,400);
 
+        this.arrow = this.add.sprite(this.world.centerX, this.world.centerY, 'arrow');
+        this.arrow.anchor.setTo(0.5, 0.5);
+
         ///Timer for Vitamins
         this.time.events.loop(Phaser.Timer.SECOND, this.decreaseVitamins, this);
         this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updatePurpleEnemies, this);
@@ -130,15 +136,26 @@ Antom.prototype = {
 
     update: function() {
         this.game.physics.arcade.collide(this.dude, this.layer);
-
         this.playerMovement();
+        this.showArrow();
         this.collisionDetectionPurpleEnemy();
         this.collisionDetectionBlueEnemy();
         this.collisionDetectionVitamins();
         this.collisionDetectionPowerups();
-        this.collisionDetectionAmeisenbau()
-    },
+        this.collisionDetectionAmeisenbau();
 
+        this.arrow.rotation = this.physics.arcade.angleBetween(this.arrow, this.ameisenbau);
+    },
+    showArrow: function() {
+        if(this.carryingVitamin) {
+            this.arrow.position.x = this.dude.position.x + 50;
+            this.arrow.position.y = this.dude.position.y + 50;
+            this.arrow.visible = true;
+        }
+        else {
+            this.arrow.visible = false;
+        }
+    },
     playerMovement: function() {
         //-----Player movement--------
         this.dude.body.velocity.x = 0;
