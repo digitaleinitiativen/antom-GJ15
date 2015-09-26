@@ -1,21 +1,10 @@
-game = new (Phaser.Game)(800, 400, Phaser.AUTO, 'game')
-
-ASGame = (game) ->
-  @game = game
-  this.bg = null
-  this.dude = null
-  this.cursors = null
-  this.stars = null
-  this.scorebox = null
-  this.score = 0
-  return
-
-ASGame.prototype =
+Antom.prototype =
 
   init: ->
     this.physics.startSystem(Phaser.Physics.ARCADE)
     this.cursors = this.input.keyboard.createCursorKeys()
     console.log 'init'
+    this.loadTilemap()
     return
 
   preload: ->
@@ -84,4 +73,4 @@ ASGame.prototype =
     this.score++
     this.scorebox.text = this.score + ' Store'
 
-game.state.add 'LevelOne', ASGame, true
+game.state.add 'LevelOne', Antom, true
