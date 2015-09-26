@@ -277,6 +277,7 @@ Antom.State.Game.prototype = {
         this.vitamins--;
         if(this.vitamins <= 0) {
             this.dude.kill();
+            this.game.state.start('end');
         }
         this.refreshTexts();
     },

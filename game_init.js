@@ -3,6 +3,7 @@ Antom.main = function() {
 
   game.state.add('preloader', Antom.State.Preloader);
   game.state.add('game', Antom.State.Game);
+  game.state.add('end', Antom.State.End);
   game.state.start('preloader');
 };
 

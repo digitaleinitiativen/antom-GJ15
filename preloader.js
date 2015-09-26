@@ -38,7 +38,4 @@ Antom.State.Preloader.prototype = {
     this.load.spritesheet('dude', 'assets/001_Tom_Basic.png', 32, 32);
   }
 
-
-
-
 };
