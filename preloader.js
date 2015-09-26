@@ -13,9 +13,12 @@ Antom.State.Preloader.prototype = {
   create: function() {
     this.world.setBounds(0,0,3200,2400);
     var antom = this.game.add.sprite(200, 0, 'antom');
+    var intro = this.game.add.sprite(150, 100, 'intro');
     var antom;
     this.game.add.tween(antom).to(
         { y: 250 }, 3000, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
+    this.game.add.tween(intro).to(
+        { y: 350 }, 3000, Phaser.Easing.Linear.None, true, 0, Number.MAX_VALUE, true);
     var self = this.game;
     setTimeout(function(){ self.state.start('game'); }, 3000);
 
@@ -32,6 +35,7 @@ Antom.State.Preloader.prototype = {
     this.load.image('carrot', 'assets/carrot.png');
     this.load.image('ameisenbau', 'assets/001_Antom_House.png');
     this.load.image('antom', 'assets/antom.png');
+    this.load.image('intro', 'assets/intro-text.png');
     this.load.spritesheet('001_Sprite_Arrow', 'assets/001_Sprite_Arrow.png',32,32);
     this.load.spritesheet('001_Enemy_Purple', 'assets/001_Enemy_Purple.png',32,32,2);
     this.load.spritesheet('001_Enemy_Blue', 'assets/001_Enemies_Sprite_Blue.png',32,32,2);
