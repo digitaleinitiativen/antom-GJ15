@@ -17,6 +17,7 @@ var Antom = function(game) {
     this.speedText = null;
     this.ameisenbau = null;
     this.carryingVitamin = false;
+    this.vitaminBar = null;
 };
 
 Antom.prototype = {
