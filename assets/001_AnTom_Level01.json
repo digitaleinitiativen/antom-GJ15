@@ -2,7 +2,7 @@
  "layers":[
         {
          "compression":"zlib",
-         "data":"eJzt2EEOgyAQQFH0\/ofutiFgsUVmGt7i7TQh80NAj1LKwd8630SvZWd1h7Mheo07GZm3JnPn3TOzGb\/NcnTGWjzboz4rote3m1aP6DXt7Gp\/tJ51p1rb424Xbdb0+NRk5H2+6zEy89454\/vwmSYzG2qyrsnoHtBkTRPfibma3DkjNInvpUeeHvWdK3qtu3PnzUeLHOyLPHTIQ4sc\/LfKoTd\/bWI6zH4WAAAAAAAAAAAAAAAAAAAAAAAAYHcv6Qgdsw==",
+         "data":"eJzt11EKgCAQRVFt\/4tuAwYV6DzrfJxPYZgLir211gE+4hionumv7D6HFln0yOGdyHLVQqMcWmQZ9dCopoP7aw96zNvrm93qMa\/HynPosRM9sjx9P\/zf1zW5o3pWAAAAAAAAAAAAAAAAAAAAAAAAAAAAYB8nINodeA==",
          "encoding":"base64",
          "height":75,
          "name":"Kachelebene 1",
@@ -24,21 +24,8 @@
  "tilesets":[
         {
          "firstgid":1,
-         "margin":0,
-         "name":"001_BG_Texture",
-         "properties":
-            {
-
-            },
-         "spacing":0,
-         "tilecount":0,
-         "tileheight":1,
-         "tilewidth":1
-        }, 
-        {
-         "firstgid":1,
-         "image":"..\/001_BG_Texture.png",
-         "imageheight":320,
+         "image":"001_BG_Texture.png",
+         "imageheight":32,
          "imagewidth":320,
          "margin":0,
          "name":"001_BG_Texture",
@@ -47,7 +34,7 @@
 
             },
          "spacing":0,
-         "tilecount":100,
+         "tilecount":10,
          "tileheight":32,
          "tilewidth":32
         }],
