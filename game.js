@@ -41,16 +41,20 @@ Antom.prototype = {
         this.load.image('ameisenbau', 'assets/ameisenbau.png');
         this.load.spritesheet('001_Enemy_Purple', 'assets/001_Enemy_Purple.png',32,32);
         this.load.spritesheet('001_Enemy_Blue', 'assets/001_Enemy_Blue.png',32,32);
-        this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
+        this.load.spritesheet('dude', 'assets/001_Tom_Basic.png', 32, 32);
+
     },
 
     initPlayer: function() {
         //----Initialize player----
-        //this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
-        this.dude = this.add.sprite(200, 200,'dude');
+        this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
+        //this.dude = this.add.sprite(200, 200,'dude');
         this.physics.arcade.enable(this.dude);
         this.dude.body.collideWorldBounds = true;
         this.camera.follow(this.dude);
+        this.dude.animations.add('stand', [3], 1, false);
+        this.dude.animations.add('left', [0,1,2], 10, true);
+        this.dude.animations.add('right', [4,5,6], 10);
     },
 
     initEnemyGroups: function() {
@@ -142,17 +146,24 @@ Antom.prototype = {
 
         if(this.controls.left.isDown) {
             this.dude.body.velocity.x = -this.playerSpeed;
+            this.dude.animations.play('left')
         }
         else if(this.controls.right.isDown) {
             this.dude.body.velocity.x = this.playerSpeed;
+            this.dude.animations.play('right')
         }
-
-        if(this.controls.up.isDown) {
+        else if(this.controls.up.isDown) {
             this.dude.body.velocity.y = -this.playerSpeed;
+            this.dude.animations.play('stand')
         }
         else if(this.controls.down.isDown) {
             this.dude.body.velocity.y = this.playerSpeed;
+            this.dude.animations.play('stand')
         }
+        else {
+            this.dude.animations.play('stand')
+        }
+
     },
 
     updatePurpleEnemies: function() {
