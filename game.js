@@ -72,7 +72,7 @@ Antom.State.Game.prototype = {
         this.vitaminText = this.add.text(10,10, "Vitaminlevel:", style);
         this.vitaminText.fixedToCamera = true;
 
-        this.speedText = this.add.text(10, 40, "PlayerSpeed: " + this.playerSpeed, style);
+        this.speedText = this.add.text(10, 30, "PlayerSpeed:    " + this.playerSpeed, style);
         this.speedText.fixedToCamera = true;
     },
     initHealthBar: function() {
@@ -270,7 +270,7 @@ Antom.State.Game.prototype = {
 
     refreshTexts: function() {
         //this.vitaminText.text = "Vitamins: " + this.vitamins;
-        this.speedText.text = "PlayerSpeed: " + this.playerSpeed;
+        this.speedText.text = "PlayerSpeed:    " + this.playerSpeed;
     },
     decreaseVitamins: function() {
         //---Decrease Vitamins---------
