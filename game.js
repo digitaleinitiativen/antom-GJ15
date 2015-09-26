@@ -1,6 +1,4 @@
-var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
-
-var Antom = function(game) {
+Antom.State.Game = function(game) {
     this.game = game;
     this.arrow = null;
     this.dude = null;
@@ -19,38 +17,17 @@ var Antom = function(game) {
     this.bar = null;
     this.barSprite = null;
 };
-
-Antom.prototype = {
+Antom.State.Game.prototype = {
     init: function() {
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.controls = this.input.keyboard.createCursorKeys();
     },
-
     preload: function() {
-        this.loadAssets();
-    },
-
-    loadAssets: function() {
-        this.load.image('star', 'assets/star.png');
-        this.load.image('arrow', 'assets/arrow.png');
-        this.load.tilemap('map', 'assets/001_AnTom_Level1.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
-        this.load.spritesheet('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png', 32, 32, 2);
-        var lemon = this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
-        this.load.image('001_Enemy_Blue', 'assets/001_Enemy_Blue.png');
-        this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
-        this.load.image('001_Enemy_Purple', 'assets/001_Enemy_Purple.png');
-        this.load.image('carrot', 'assets/carrot.png');
-        this.load.image('ameisenbau', 'assets/ameisenbau.png');
-        this.load.spritesheet('001_Enemy_Purple', 'assets/001_Enemy_Purple.png',32,32);
-        this.load.spritesheet('001_Enemy_Blue', 'assets/001_Enemy_Blue.png',32,32);
-        this.load.spritesheet('dude', 'assets/001_Tom_Basic.png', 32, 32);
 
     },
-
     initPlayer: function() {
         //----Initialize player----
-        this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
+        this.dude = this.add.sprite(this.game.world.centerX, this.game.world.centerY,'dude');
         //this.dude = this.add.sprite(200, 200,'dude');
         this.physics.arcade.enable(this.dude);
         this.dude.body.collideWorldBounds = true;
@@ -108,10 +85,7 @@ Antom.prototype = {
         this.ameisenbau.anchor.setTo(0.5, 0.5);
         this.physics.arcade.enable(this.ameisenbau);
     },
-
-    create: function() {
-        this.world.setBounds(0,0,3200,2400);
-
+    setTilemap: function() {
         // set tilemap
         this.map = this.add.tilemap('map');
         this.map.addTilesetImage('001_Lawn_Sprite');
@@ -124,6 +98,14 @@ Antom.prototype = {
         this.layer = this.map.createLayer('Kachelebene 1');
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
         this.map.setTileIndexCallback(15, this.pickupVitamin, this);
+
+
+    },
+
+
+    create: function() {
+
+        this.setTilemap();
 
         this.initText();
         this.initHealthBar();
@@ -310,4 +292,4 @@ Antom.prototype = {
 
 };
 
-game.state.add('LevelOne', Antom, true);
+//game.state.add('LevelOne', Antom, true);
