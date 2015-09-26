@@ -1,10 +1,9 @@
-Antom.prototype =
+window.Antom.prototype =
 
   init: ->
     this.physics.startSystem(Phaser.Physics.ARCADE)
     this.cursors = this.input.keyboard.createCursorKeys()
     console.log 'init'
-    this.loadTilemap()
     return
 
   preload: ->

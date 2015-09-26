@@ -1,4 +1,2 @@
-Antom.prototype =
-
-  loadTilemap: ->
-    console.log 'tilemap'
+window.Antom.prototype.loadTilemap ->
+  console.log 'tilemap'

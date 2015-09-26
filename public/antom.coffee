@@ -1,6 +1,6 @@
-game = new (Phaser.Game)(800, 400, Phaser.AUTO, 'game')
+window.game = new (Phaser.Game)(800, 400, Phaser.AUTO, 'game')
 
-Antom = (game) ->
+window.Antom = (game) ->
   @game = game
   this.bg = null
   this.dude = null
