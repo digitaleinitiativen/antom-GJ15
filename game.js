@@ -17,6 +17,7 @@ var Antom = function(game) {
     this.speedText = null;
     this.ameisenbau = null;
     this.carryingVitamin = false;
+    this.vitaminBar = null;
 };
 
 Antom.prototype = {
@@ -119,6 +120,7 @@ Antom.prototype = {
         this.layer = this.map.createLayer('Kachelebene 1');
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
         this.map.setTileIndexCallback(15, this.pickupVitamin, this);
+
 
 
         this.initText();
