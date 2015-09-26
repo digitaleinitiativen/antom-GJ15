@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="75" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" name="001_BG_Texture" tilewidth="1" tileheight="1" tilecount="0"/>
  <tileset firstgid="1" name="001_BG_Texture" tilewidth="32" tileheight="32" tilecount="100">
   <image source="001_BG_Texture.png" width="320" height="320"/>
  </tileset>
