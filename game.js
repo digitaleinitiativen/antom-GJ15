@@ -3,6 +3,7 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
 var Antom = function(game) {
     this.game = game;
     this.dude = null;
+    this.enemy = null;
     this.controls = null;
     this.stars = null;
     this.carrots = null;
@@ -22,6 +23,7 @@ Antom.prototype = {
     preload: function() {
         this.load.image('star', 'assets/star.png');
         this.load.image('carrot', 'assets/carrot.png');
+        this.load.image('enemy', 'assets/bikkuriman.png');
         this.load.image('ameisenbau', 'assets/ameisenbau.png');
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
         this.loadTilemapAssets();
@@ -57,7 +59,7 @@ Antom.prototype = {
         //----Stars-----
         this.stars = this.add.group();
         this.stars.enableBody = true;
-        for(var i = 0; i < 40; i++) {
+        for(var i = 0; i < 15; i++) {
             var star = this.stars.create(
                 Math.random() * this.world.width,
                 Math.random() * this.world.height,
@@ -68,12 +70,17 @@ Antom.prototype = {
         //----Carrots-----
         this.carrots = this.add.group();
         this.carrots.enableBody = true;
-        for(var j = 0; j < 10; j++) {
+        for(var j = 0; j < 5; j++) {
             var carrot = this.carrots.create(
                 Math.random() * this.world.width,
                 Math.random() * this.world.height,
                 'carrot');
         }
+
+        //Initialize enemy
+        this.enemy = this.add.sprite(game.world.centerX, 0, 'enemy');
+        this.physics.arcade.enable(this.enemy);
+        this.enemy.body.collideWorldBounds = true;
 
         //----Initialize player----
         this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
@@ -141,8 +148,8 @@ Antom.prototype = {
     },
     returnVitamins: function() {
         if(this.carryingVitamin) {
-            this.playerSpeed = this.playerSpeed + 50;
-            this.vitamins = 100;
+            this.playerSpeed = this.playerSpeed + 25;
+            this.vitamins = this.vitamins + 10;
             this.refreshTexts();
             this.carryingVitamin = false;
         }
