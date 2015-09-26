@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="75" tilewidth="32" tileheight="32" nextobjectid="1">
+ <tileset firstgid="1" name="001_BG_Texture" tilewidth="1" tileheight="1" tilecount="0"/>
+ <tileset firstgid="1" name="001_BG_Texture" tilewidth="32" tileheight="32" tilecount="100">
+  <image source="001_BG_Texture.png" width="320" height="320"/>
+ </tileset>
+ <layer name="Kachelebene 1" width="100" height="75">
+  <data encoding="base64" compression="zlib">
+   eJzt2EEOgyAQQFH0/ofutiFgsUVmGt7i7TQh80NAj1LKwd8630SvZWd1h7Mheo07GZm3JnPn3TOzGb/NcnTGWjzboz4rote3m1aP6DXt7Gp/tJ51p1rb424Xbdb0+NRk5H2+6zEy89454/vwmSYzG2qyrsnoHtBkTRPfibma3DkjNInvpUeeHvWdK3qtu3PnzUeLHOyLPHTIQ4sc/LfKoTd/bWI6zH4WAAAAAAAAAAAAAAAAAAAAAAAAYHcv6Qgdsw==
+  </data>
+ </layer>
+</map>
