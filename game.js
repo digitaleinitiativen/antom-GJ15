@@ -32,8 +32,9 @@ Antom.prototype = {
         this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
         this.load.tilemap('map', 'assets/001_AnTom_Level1.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
-        this.load.image('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png');
-        this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
+        this.load.spritesheet('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png', 32, 32, 2);
+        var lemon = this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
+        lemon.frame = 1;
         this.load.image('001_Enemy_Blue', 'assets/001_Enemy_Blue.png');
         this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
         this.load.image('001_Enemy_Purple', 'assets/001_Enemy_Purple.png');
@@ -124,13 +125,14 @@ Antom.prototype = {
         this.map = this.add.tilemap('map');
         this.map.addTilesetImage('001_Lawn_Sprite');
         this.map.setCollisionBetween(4, 10);
+
         this.map.addTilesetImage('001_Fruititem_Lemon');
         this.map.addTilesetImage('001_Fruititem_Orange');
         this.map.addTilesetImage('001_Enemy_Blue');
         this.map.addTilesetImage('001_Enemy_Purple');
         this.layer = this.map.createLayer('Kachelebene 1');
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
-        this.map.setTileIndexCallback(15, this.hitCherry, this);
+        this.map.setTileIndexCallback(15, this.pickupVitamin, this);
 
 
         this.initText();
@@ -249,12 +251,14 @@ Antom.prototype = {
             this.carryingVitamin = false;
         }
     },
-    hitCherry: function(sprite, tile) {
-      console.log('hit')
-      tile.alpha = 0.2;
-      this.layer.dirty = true;
-      return false;
+    pickupVitamin: function(sprite, tile) {
+        if(!this.carryingVitamin) {
+            //this.map.replace(15, 1);
+            this.map.putTile(3, tile.x, tile.y);
+            this.carryingVitamin = true;
+        }
     }
+
 
 };
 
