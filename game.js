@@ -26,8 +26,10 @@ Antom.prototype = {
     loadAssets: function() {
         this.load.image('star', 'assets/star.png');
         this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
-        this.load.tilemap('map', 'assets/002_AnTom_Level01.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('001_BG_Texture', 'assets/001_BG_Texture.png');
+        this.load.tilemap('map', 'assets/001_AnTom_Level1.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
+        this.load.image('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png');
+        this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
         this.load.image('carrot', 'assets/carrot.png');
         this.load.image('enemy', 'assets/bikkuriman.png');
         this.load.image('ameisenbau', 'assets/ameisenbau.png');
@@ -37,9 +39,13 @@ Antom.prototype = {
 
         // set tilemap
         this.map = this.add.tilemap('map');
-        this.map.addTilesetImage('001_BG_Texture');
+        this.map.addTilesetImage('001_Lawn_Sprite');
+        this.map.setCollisionBetween(4, 10);
+        this.map.addTilesetImage('001_Fruititem_Lemon');
+        this.map.addTilesetImage('001_Fruititem_Orange');
         this.layer = this.map.createLayer('Kachelebene 1');
-        this.map.setCollisionBetween(2, 2);
+        //  This will set Tile ID 15 (the lemon) to call the function when collided with
+        this.map.setTileIndexCallback(15, this.hitCherry, this);
 
         //-----Score Text----
         var style = {
@@ -84,7 +90,8 @@ Antom.prototype = {
         this.enemy.body.collideWorldBounds = true;
 
         //----Initialize player----
-        this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
+        //this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
+        this.dude = this.add.sprite(200, 200,'dude');
         this.physics.arcade.enable(this.dude);
         this.dude.body.collideWorldBounds = true;
         this.camera.follow(this.dude);
@@ -150,7 +157,14 @@ Antom.prototype = {
             this.refreshTexts();
             this.carryingVitamin = false;
         }
+    },
+    hitCherry: function(sprite, tile) {
+      console.log('hit')
+      tile.alpha = 0.2;
+      this.layer.dirty = true;
+      return false;
     }
+
 };
 
 game.state.add('LevelOne', Antom, true);
