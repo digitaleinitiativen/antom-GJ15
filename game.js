@@ -18,18 +18,29 @@ Antom.prototype = {
         this.controls = this.input.keyboard.createCursorKeys();
     },
     preload: function() {
-        this.load.image('bg', 'assets/background.png');
+        this.loadAssets();
+    },
+    loadAssets: function() {
         this.load.image('star', 'assets/star.png');
-        this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-        this.loadTilemapAssets();
+        this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
+
+        this.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
+        //this.load.tilemap('map', 'assets/001_Tilemaps/001_AnTom_Level01.json', null, Phaser.Tilemap.TILED_JSON);
+        //this.load.image('stone', 'assets/001_Stone.png');
+
     },
     create: function() {
-
         this.world.setBounds(0,0,3200,2400);
+
         // set tilemap
-        this.map = this.add.tilemap('mario');
-        this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
-        this.layer = this.map.createLayer("World1");
+        this.map = this.add.tilemap('map');
+        this.map.addTilesetImage('ground_1x1');
+
+        this.layer = this.map.createLayer('Tile Layer 1');
+
+        this.map.setCollisionBetween(1, 1);
+
         //  This resizes the game world to match the layer dimensions
         this.layer.resizeWorld();
 
@@ -64,6 +75,7 @@ Antom.prototype = {
         this.time.events.loop(Phaser.Timer.SECOND, this.decreaseVitamins, this);
     },
     update: function() {
+        this.game.physics.arcade.collide(this.dude, this.layer);
 
         //-----Player movement--------
         this.dude.body.velocity.x = 0;
@@ -92,11 +104,6 @@ Antom.prototype = {
             this.playerSpeed = this.playerSpeed + 50;
             this.speedText.text = "PlayerSpeed: " + this.playerSpeed;
         }, null, this);
-
-    },
-    loadTilemapAssets: function() {
-        this.load.tilemap('mario', 'assets/tilemap/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('tiles', 'assets/super_mario.png');
 
     },
     decreaseVitamins: function() {
