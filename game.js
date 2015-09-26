@@ -58,6 +58,9 @@ Antom.prototype = {
         this.dude.animations.add('stand', [3], 1, false);
         this.dude.animations.add('left', [0,1,2], 10, true);
         this.dude.animations.add('right', [4,5,6], 10);
+        this.dude.animations.add('up', [8,9,10], 10);
+        this.dude.animations.add('down', [11,12,13], 10);
+        this.dude.animations.add('jump', [3,7,3,7], 10);
     },
 
     initEnemyGroups: function() {
@@ -112,7 +115,7 @@ Antom.prototype = {
         // set tilemap
         this.map = this.add.tilemap('map');
         this.map.addTilesetImage('001_Lawn_Sprite');
-        this.map.setCollisionBetween(4, 10);
+        this.map.setCollisionBetween(4, 14);
 
         this.map.addTilesetImage('001_Fruititem_Lemon');
         this.map.addTilesetImage('001_Fruititem_Orange');
@@ -194,14 +197,14 @@ Antom.prototype = {
         }
         else if(this.controls.up.isDown) {
             this.dude.body.velocity.y = -this.playerSpeed;
-            this.dude.animations.play('stand')
+            this.dude.animations.play('up')
         }
         else if(this.controls.down.isDown) {
             this.dude.body.velocity.y = this.playerSpeed;
-            this.dude.animations.play('stand')
+            this.dude.animations.play('down')
         }
         else {
-            this.dude.animations.play('stand')
+            this.dude.animations.play('jump')
         }
 
     },
