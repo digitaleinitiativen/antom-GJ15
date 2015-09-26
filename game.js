@@ -34,6 +34,9 @@ Antom.prototype = {
         this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
         this.load.image('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png');
         this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
+        this.load.image('001_Enemy_Blue', 'assets/001_Enemy_Blue.png');
+        this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
+        this.load.image('001_Enemy_Purple', 'assets/001_Enemy_Purple.png');
         this.load.image('carrot', 'assets/carrot.png');
         this.load.image('enemy', 'assets/bikkuriman.png');
         this.load.image('ameisenbau', 'assets/ameisenbau.png');
@@ -123,6 +126,8 @@ Antom.prototype = {
         this.map.setCollisionBetween(4, 10);
         this.map.addTilesetImage('001_Fruititem_Lemon');
         this.map.addTilesetImage('001_Fruititem_Orange');
+        this.map.addTilesetImage('001_Enemy_Blue');
+        this.map.addTilesetImage('001_Enemy_Purple');
         this.layer = this.map.createLayer('Kachelebene 1');
         //  This will set Tile ID 15 (the lemon) to call the function when collided with
         this.map.setTileIndexCallback(15, this.hitCherry, this);
