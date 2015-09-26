@@ -23,11 +23,8 @@ Antom.prototype = {
     loadAssets: function() {
         this.load.image('star', 'assets/star.png');
         this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
-
-        this.load.tilemap('map', 'assets/tilemaps/maps/collision_test.json', null, Phaser.Tilemap.TILED_JSON);
-        this.load.image('ground_1x1', 'assets/tilemaps/tiles/ground_1x1.png');
-        //this.load.tilemap('map', 'assets/001_Tilemaps/001_AnTom_Level01.json', null, Phaser.Tilemap.TILED_JSON);
-        //this.load.image('stone', 'assets/001_Stone.png');
+        this.load.tilemap('map', 'assets/002_AnTom_Level01.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('001_BG_Texture', 'assets/001_BG_Texture.png');
 
     },
     create: function() {
@@ -35,14 +32,9 @@ Antom.prototype = {
 
         // set tilemap
         this.map = this.add.tilemap('map');
-        this.map.addTilesetImage('ground_1x1');
-
-        this.layer = this.map.createLayer('Tile Layer 1');
-
-        this.map.setCollisionBetween(1, 1);
-
-        //  This resizes the game world to match the layer dimensions
-        this.layer.resizeWorld();
+        this.map.addTilesetImage('001_BG_Texture');
+        this.layer = this.map.createLayer('Kachelebene 1');
+        this.map.setCollisionBetween(2, 2);
 
         //-----Score Text----
         var style = {
