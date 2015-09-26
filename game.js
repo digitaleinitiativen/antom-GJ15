@@ -16,15 +16,18 @@ Antom.prototype = {
         this.controls = this.input.keyboard.createCursorKeys();
     },
     preload: function() {
-        this.load.image('bg', 'assets/background.png');
         this.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+        this.loadTilemapAssets();
     },
     create: function() {
 
         this.world.setBounds(0,0,3200,2400);
-
-        this.bg = this.add.tileSprite(0, 0, 3200, 2400, 'bg');
-
+        // set tilemap
+        this.map = this.add.tilemap('mario');
+        this.map.addTilesetImage('SuperMarioBros-World1-1', 'tiles');
+        this.layer = this.map.createLayer("World1");
+        //  This resizes the game world to match the layer dimensions
+        this.layer.resizeWorld();
 
         //----Initialize player----
         this.dude = this.add.sprite(game.world.centerX, game.world.centerY,'dude');
@@ -53,6 +56,10 @@ Antom.prototype = {
             this.dude.body.velocity.y = 150;
         }
 
+    },
+    loadTilemapAssets: function() {
+        this.load.tilemap('mario', 'assets/tilemap/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
+        this.load.image('tiles', 'assets/super_mario.png');
     }
 };
 
