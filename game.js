@@ -3,8 +3,9 @@ var game = new Phaser.Game(640, 480, Phaser.AUTO, 'game');
 var Antom = function(game) {
     this.game = game;
     this.dude = null;
-    this.enemies = null;
-    this.enemy = null;
+    this.purpleEnemies = null;
+    this.blueEnemies = null;
+    this.item = null;
     this.enemySpeed = 50;
     this.controls = null;
     this.stars = null;
@@ -29,41 +30,18 @@ Antom.prototype = {
 
     loadAssets: function() {
         this.load.image('star', 'assets/star.png');
-        this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
         this.load.tilemap('map', 'assets/001_AnTom_Level1.json', null, Phaser.Tilemap.TILED_JSON);
         this.load.image('001_Lawn_Sprite', 'assets/001_Lawn_Sprite.png');
         this.load.spritesheet('001_Fruititem_Lemon', 'assets/001_Fruititem_Lemon.png', 32, 32, 2);
         var lemon = this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
-        lemon.frame = 1;
         this.load.image('001_Enemy_Blue', 'assets/001_Enemy_Blue.png');
         this.load.image('001_Fruititem_Orange', 'assets/001_Fruititem_Orange.png');
         this.load.image('001_Enemy_Purple', 'assets/001_Enemy_Purple.png');
         this.load.image('carrot', 'assets/carrot.png');
-        this.load.image('enemy', 'assets/bikkuriman.png');
         this.load.image('ameisenbau', 'assets/ameisenbau.png');
-    },
-    initVitamins: function() {
-        //----Stars-----
-        this.stars = this.add.group();
-        this.stars.enableBody = true;
-        for(var i = 0; i < 15; i++) {
-            var star = this.stars.create(
-                Math.random() * this.world.width,
-                Math.random() * this.world.height,
-                'star');
-        }
-    },
-
-    initPowerups: function() {
-        //----Carrots-----
-        this.carrots = this.add.group();
-        this.carrots.enableBody = true;
-        for(var j = 0; j < 5; j++) {
-            var carrot = this.carrots.create(
-                Math.random() * this.world.width,
-                Math.random() * this.world.height,
-                'carrot');
-        }
+        this.load.spritesheet('001_Enemy_Purple', 'assets/001_Enemy_Purple.png',32,32);
+        this.load.spritesheet('001_Enemy_Blue', 'assets/001_Enemy_Blue.png',32,32);
+        this.load.spritesheet('dude', 'assets/001_Tom_Basic_1.png', 32, 32);
     },
 
     initPlayer: function() {
@@ -75,28 +53,26 @@ Antom.prototype = {
         this.camera.follow(this.dude);
     },
 
-    initAllEnemies: function() {
-        this.enemy = this.add.sprite(this.world.centerX, this.world.centerY, 'enemy');
-        this.physics.arcade.enable(this.enemy);
-        this.enemy.body.collideWorldBounds = true;
-        this.enemy.body.immovable = true;
-        this.enemy.body.velocity.x = this.enemy.body.velocity.y = this.enemySpeed;
+    initEnemyGroups: function() {
+        this.purpleEnemies = this.add.group();
+        this.purpleEnemies.enableBody = true;
+        this.blueEnemies = this.add.group();
+        this.blueEnemies.enableBody = true;
+
     },
 
-    initEnemy: function(x,y) {
-        //Initialize enemy
-        var enemy = this.enemies.create(x, y, 'enemy');
-        enemy.body.collideWorldBounds = true;
+    initEnemyPurple: function(x,y) {
+        var purpleEnemy = this.purpleEnemies.create(x,y, '001_Enemy_Purple');
+        purpleEnemy.body.collideWorldBounds = true;
+        purpleEnemy.body.immovable = true;
+        purpleEnemy.body.velocity.x = purpleEnemy.body.velocity.y = this.enemySpeed;
+    },
 
-        tweenDownRight = this.add.tween(enemy).to({x:'+100', y:'+100'}, 400);
-        tweenUpLeft = this.add.tween(enemy).to({x:'-100', y:'-100'}, 400);
-        tweenUpRight = this.add.tween(enemy).to({x:'+100', y:'-100'}, 400);
-        tweenDownLeft = this.add.tween(enemy).to({x:'-100', y:'+100'}, 400);
-
-        tweenDownRight.start().chain(tweenUpRight);
-        tweenUpRight.chain(tweenUpLeft);
-        tweenUpLeft.chain(tweenDownLeft);
-        tweenDownLeft.chain(tweenDownRight);
+    initEnemyBlue: function(x,y) {
+        var blueEnemy = this.blueEnemies.create(x,y, '001_Enemy_Blue');
+        blueEnemy.body.collideWorldBounds = true;
+        blueEnemy.body.immovable = true;
+        blueEnemy.body.velocity.x = this.enemySpeed;
     },
 
     initText: function() {
@@ -136,22 +112,24 @@ Antom.prototype = {
 
 
         this.initText();
-        this.initVitamins();
-        this.initPowerups();
         this.initAmeisenbau();
         this.initPlayer();
-        this.initAllEnemies();
+        this.initEnemyGroups();
+        this.initEnemyBlue(500,500);
+        this.initEnemyPurple(400,400);
 
         ///Timer for Vitamins
         this.time.events.loop(Phaser.Timer.SECOND, this.decreaseVitamins, this);
-        this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updateEnemy, this);
+        this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updatePurpleEnemies, this);
+        this.time.events.repeat(Phaser.Timer.SECOND * 1.25, Infinity, this.updateBlueEnemies, this);
     },
 
     update: function() {
         this.game.physics.arcade.collide(this.dude, this.layer);
 
         this.playerMovement();
-        this.collisionDetectionEnemy();
+        this.collisionDetectionPurpleEnemy();
+        this.collisionDetectionBlueEnemy();
         this.collisionDetectionVitamins();
         this.collisionDetectionPowerups();
         this.collisionDetectionAmeisenbau()
@@ -161,7 +139,6 @@ Antom.prototype = {
         //-----Player movement--------
         this.dude.body.velocity.x = 0;
         this.dude.body.velocity.y = 0;
-        this.dude.frame = 4;
 
         if(this.controls.left.isDown) {
             this.dude.body.velocity.x = -this.playerSpeed;
@@ -178,33 +155,49 @@ Antom.prototype = {
         }
     },
 
-    updateEnemy: function() {
-        console.log("beep");
-        var velX = this.enemy.body.velocity.x,
-            velY = this.enemy.body.velocity.y;
+    updatePurpleEnemies: function() {
+        this.purpleEnemies.forEach(function(item) {
+            var velX = item.body.velocity.x,
+                velY = item.body.velocity.y;
 
-        if(velX > 0 && velY > 0) {
-            this.enemy.body.velocity.y*=-1;
-        }
-        else if(velX > 0 && velY < 0) {
-            this.enemy.body.velocity.x*=-1;
-        }
-        else if(velX < 0 && velY < 0) {
-            this.enemy.body.velocity.y*=-1;
-        }
-        else if(velX < 0 && velY > 0) {
-            this.enemy.body.velocity.x*=-1;
-        }
+            if(velX > 0 && velY > 0) {
+                item.body.velocity.y*=-1;
+            }
+            else if(velX > 0 && velY < 0) {
+                item.body.velocity.x*=-1;
+            }
+            else if(velX < 0 && velY < 0) {
+                item.body.velocity.y*=-1;
+            }
+            else if(velX < 0 && velY > 0) {
+                item.body.velocity.x*=-1;
+            }
+        });
     },
 
-    collisionDetectionEnemy: function() {
+    updateBlueEnemies: function() {
+        this.blueEnemies.forEach(function(item) {
+            item.body.velocity.x *= -1;
+        });
+    },
+
+    collisionDetectionPurpleEnemy: function() {
         //----Enemy collide----------
-        this.physics.arcade.collide(this.dude,this.enemy,function(dude,enemy) {
-            if(!this.carryingVitamin) {
-                dude.kill();
-                this.vitamins = 0;
-                this.refreshTexts();
-            }
+        this.physics.arcade.collide(this.dude,this.purpleEnemies,function(dude,enemy) {
+            dude.kill();
+            enemy.kill();
+            this.vitamins = 0;
+            this.refreshTexts();
+        }, null, this);
+    },
+
+    collisionDetectionBlueEnemy: function() {
+        //----Enemy collide----------
+        this.physics.arcade.collide(this.dude,this.blueEnemies,function(dude,enemy) {
+            dude.kill();
+            enemy.kill();
+            this.vitamins = 0;
+            this.refreshTexts();
         }, null, this);
     },
 
@@ -252,13 +245,12 @@ Antom.prototype = {
         }
     },
     pickupVitamin: function(sprite, tile) {
-        if(!this.carryingVitamin) {
+        if (!this.carryingVitamin) {
             //this.map.replace(15, 1);
             this.map.putTile(3, tile.x, tile.y);
             this.carryingVitamin = true;
         }
     }
-
 
 };
 
