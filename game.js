@@ -283,7 +283,7 @@ Antom.State.Game.prototype = {
 
     returnVitamins: function() {
         if(this.carryingVitamin) {
-            this.playerSpeed = this.playerSpeed + 25;
+            this.playerSpeed = this.playerSpeed + 10;
             this.vitamins = this.vitamins + 10;
             this.refreshTexts();
             this.carryingVitamin = false;
@@ -298,7 +298,7 @@ Antom.State.Game.prototype = {
     },
     pickupPowerup: function(sprite, tile) {
         this.map.putTile(3, tile.x, tile.y);
-        this.playerSpeed = this.playerSpeed + 50;
+        this.playerSpeed = this.playerSpeed + 10;
         this.refreshTexts();
     }
 
