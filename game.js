@@ -283,7 +283,6 @@ Antom.prototype = {
         //this.vitaminText.text = "Vitamins: " + this.vitamins;
         this.speedText.text = "PlayerSpeed: " + this.playerSpeed;
     },
-
     decreaseVitamins: function() {
         //---Decrease Vitamins---------
         this.vitamins--;
